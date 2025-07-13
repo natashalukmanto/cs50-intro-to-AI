@@ -92,17 +92,17 @@ def shortest_path(source, target):
     If no possible path, returns None.
     """
 
-    # TODO 
+    # TODO
+    # If source is already the target. 
     if source == target:
         return []
-
-    source_node = Node(state=source, parent=None, action=None)
+    
     frontier = QueueFrontier()
+    source_node = Node(state=source, parent=None, action=None)
+    visited = {source}
+    
     frontier.add(source_node)
     
-    visited_person_ids = {source}
-    
-    # Perfom the search
     while not frontier.empty():
         node = frontier.remove()
         
@@ -110,18 +110,17 @@ def shortest_path(source, target):
             if person_id == target:
                 path = [(movie_id, person_id)]
                 while node.parent:
-                    path.append((node.action, node.state))
+                    path.append((movie_id, node.state))
                     node = node.parent
                 path.reverse()
                 return path
             
-            if person_id not in visited_person_ids:
-                visited_person_ids.add(person_id)
+            if person_id not in visited:
                 child = Node(state=person_id, parent=node, action=movie_id)
-                frontier.add(child)
-    
+                visited.add(child)
+                
     return None
-
+        
 def person_id_for_name(name):
     """
     Returns the IMDB id for a person's name,
